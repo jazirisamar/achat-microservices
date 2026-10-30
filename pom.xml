@@ -21,6 +21,14 @@
 		<jjwt.version>0.11.2</jjwt.version>
 	</properties>
 
+	<modules>
+		<module>eureka-server</module>
+		<module>auth-service</module>
+		<module>api-gateway</module>
+		<module>product-service</module>
+		<module>supplier-service</module>
+		<module>invoice-service</module>
+	</modules>
 
 	<dependencyManagement>
 		<dependencies>
