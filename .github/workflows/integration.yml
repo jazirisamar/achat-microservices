@@ -1,0 +1,35 @@
+name: Integration
+
+on:
+  push:
+    branches: [dev, main]
+  workflow_dispatch:
+
+jobs:
+  integration-main:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-java@v4
+        with:
+          distribution: temurin
+          java-version: "8"
+          cache: maven
+      - name: Build + tests de tous les modules sur main
+        run: ./mvnw -B clean verify
+
+  check-services:
+    runs-on: ubuntu-latest
+    strategy:
+      fail-fast: false
+      matrix:
+        module: [eureka-server, auth-service, api-gateway, product-service, supplier-service, invoice-service]
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-java@v4
+        with:
+          distribution: temurin
+          java-version: "8"
+          cache: maven
+      - name: Build + tests de ${{ matrix.module }}
+        run: ./mvnw -B -pl ${{ matrix.module }} -am clean verify
