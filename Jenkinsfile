@@ -45,6 +45,22 @@ pipeline {
                 archiveArtifacts artifacts: '**/target/*.jar', fingerprint: true, allowEmptyArchive: true
             }
         }
+
+        stage('Publish to Nexus') {
+            when {
+                anyOf {
+                    branch 'dev'
+                    branch 'main'
+                }
+            }
+            steps {
+                withCredentials([usernamePassword(credentialsId: 'nexus-credentials',
+                                                  usernameVariable: 'NEXUS_USER',
+                                                  passwordVariable: 'NEXUS_PASS')]) {
+                    sh './mvnw -B -DskipTests -s ci/settings.xml deploy'
+                }
+            }
+        }
     }
 
     post {
