@@ -27,7 +27,7 @@ pipeline {
         stage('SonarQube Analysis') {
             steps {
                 withSonarQubeEnv('SonarQube') {
-                    sh './mvnw -B sonar:sonar -Dsonar.projectKey=achat-microservices -Dsonar.projectName=achat-microservices'
+                     sh './mvnw -B sonar:sonar'
                 }
             }
         }
